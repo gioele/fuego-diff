@@ -29,6 +29,7 @@ import fc.util.log.LogLevels;
 import fc.util.log.StreamLogger;
 import fc.xml.diff.encode.AlignEncoder;
 import fc.xml.diff.encode.DiffEncoder;
+import fc.xml.diff.encode.LowLevelEncoder;
 import fc.xml.diff.encode.RefTreeByIdEncoder;
 import fc.xml.diff.encode.RefTreeEncoder;
 import fc.xml.diff.encode.XmlDiffEncoder;
@@ -48,6 +49,7 @@ public class Diff {
         ENCODER_ALIASES.put("ref", RefTreeEncoder.class.getName());
         ENCODER_ALIASES.put("ref:id", RefTreeByIdEncoder.class.getName());
         ENCODER_ALIASES.put("align", AlignEncoder.class.getName());
+        ENCODER_ALIASES.put("lowlevel", LowLevelEncoder.class.getName());
         FILTER_ALIASES.put("full", null);
         FILTER_ALIASES.put("none", null);
     }
