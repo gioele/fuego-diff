@@ -52,7 +52,7 @@ public class Text extends Item {
 
     @Override
     public String toStringXML() {
-        return "<text>" + data + "</text>";
+        return "<fc:text>" + data + "</fc:text>";
     }
 }
 
