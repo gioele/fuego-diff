@@ -161,7 +161,11 @@ public class LowLevelEncoder implements DiffEncoder {
         String changes = "";
         if (!baseS.isEmpty()) { changes += baseS; }
         if (!baseS.isEmpty() && !brS.isEmpty()) { changes += " <=> "; }
-        if (!brS.isEmpty()) { changes += brS + (update ? " *" : "  "); }
+        if (!brS.isEmpty()) { changes += brS; }
+
+        if (update) {
+            changes += " *";
+        }
 
         if (baseS.equals(brS)) {
             changes = "<fc:MOVE from='" + pos + "' to='" + rpos + "'>" + baseS + "</fc:MOVE>";
