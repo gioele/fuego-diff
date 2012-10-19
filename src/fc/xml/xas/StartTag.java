@@ -328,7 +328,7 @@ public class StartTag extends Item {
 
         for (Iterator<AttributeNode> i = attributes(); i.hasNext();) {
             AttributeNode a = i.next();
-            attrs += "<attribute name='" + a.getName() + "' value='" + a.getValue() + "'/>";
+            attrs += "<fc:attribute name=\"" + a.getName() + "\" value=\"" + a.getValue() + "\"/>";
         }
 
         String end = "</fc:startTag>";
