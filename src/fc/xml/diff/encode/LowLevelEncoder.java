@@ -73,6 +73,10 @@ public class LowLevelEncoder implements DiffEncoder {
                             (i == 0) ? SectionPos.SECTION_START : 
                             (i == slen - 1) ? SectionPos.SECTION_END : SectionPos.SECTION_MIDDLE; 
 
+                        if (sectionPos.equals(SectionPos.SECTION_START)) {
+                            pw.println("<COMPLEX>");
+                        }
+
                         /*
                         // For long copied sections, print only the first & last 3 lines, and dots in between
                         if (i > 2 && slen > 9 && i < slen - 3 && s.getOp() != UPDATE) {
@@ -84,6 +88,11 @@ public class LowLevelEncoder implements DiffEncoder {
                         } else */
                         emitLine(pw, pos, base.get(pos), updated, s.getOp() == UPDATE,
                                  s.getPosition() + i, lpt, rpt, sectionPos);
+
+                        if (sectionPos.equals(SectionPos.SECTION_END)) {
+                            pw.println("</COMPLEX>");
+                        }
+
                         pos++;
                     }
                     // update && ins > basematch
