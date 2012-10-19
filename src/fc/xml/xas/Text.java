@@ -50,6 +50,10 @@ public class Text extends Item {
         return "T(" + data + ")";
     }
 
+    @Override
+    public String toStringXML() {
+        return data;
+    }
 }
 
 // arch-tag: 88732435-7f02-4c1a-995a-72369b9cd588

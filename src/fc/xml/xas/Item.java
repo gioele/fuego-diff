@@ -100,6 +100,9 @@ public abstract class Item {
         return isText(i) || isEntityRef(i);
     }
 
+    public String toStringXML() {
+        return "NO-XML-FORMAT(" + this.toString() + ")";
+    }
 }
 
 // arch-tag: 9a59afd5-87ac-4fd0-a007-7fdbcb96a545

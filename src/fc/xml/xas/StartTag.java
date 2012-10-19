@@ -321,6 +321,15 @@ public class StartTag extends Item {
                String.valueOf(atts) + ">)";
     }
 
+    @Override
+    public String toStringXML() {
+        String begin = "<" + name.toString();
+        String attrs = (atts == null ? "" : String.valueOf(atts));
+        String end = ">";
+
+        return begin + attrs + end;
+    }
+
     private static class MergePrefixIterator implements Iterator<PrefixNode> {
 
         private Iterator<PrefixNode> left;

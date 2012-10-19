@@ -50,6 +50,10 @@ public class EndTag extends Item {
         return "ET(" + name + ")";
     }
 
+    @Override
+    public String toStringXML() {
+        return "</" + name + ">";
+    }
 }
 
 // arch-tag: f1fe34e1-becb-40ea-bb42-0f86539f9a9a

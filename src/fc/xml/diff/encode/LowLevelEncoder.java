@@ -118,14 +118,28 @@ public class LowLevelEncoder implements DiffEncoder {
 
     private static void emitLine(PrintWriter out, int pos, Object base, Object mod, boolean update,
                                  int rpos, PosTransformer lpt, PosTransformer rpt, SectionPos sectionPos) {
-        String baseS = Util.toPrintable(base.toString());
-        String brS = Util.toPrintable(mod.toString());
+        String baseS = "";
+        String brS = "";
+
+        if (base instanceof Item) {
+            baseS = ((Item) base).toStringXML();
+        } else {
+            baseS = base.toString();
+        }
+
+        if (mod instanceof Item) {
+            brS = ((Item) mod).toStringXML();
+        } else {
+            brS = mod.toString();
+        }
+
         if (baseS.length() > EVENT_COLWIDTH)
             baseS = baseS.substring(0, EVENT_COLWIDTH / 2) + "..." +
                     baseS.substring(baseS.length() - (EVENT_COLWIDTH / 2 - 3));
         if (brS.length() > EVENT_COLWIDTH)
             brS = brS.substring(0, EVENT_COLWIDTH / 2) + "..." +
                   brS.substring(brS.length() - (EVENT_COLWIDTH / 2 - 3));
+
         out.println(StringUtil.format(lpt.transform(pos), -POS_COLWIDTH, ' ') + " " +
                     StringUtil.format(baseS, -EVENT_COLWIDTH, ' ') + " " +
                     StringUtil.format(brS, EVENT_COLWIDTH, ' ') + (update ? " *" : "  ") +
