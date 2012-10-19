@@ -141,18 +141,23 @@ public class LowLevelEncoder implements DiffEncoder {
             brS = mod.toString();
         }
 
-        if (baseS.length() > EVENT_COLWIDTH)
-            baseS = baseS.substring(0, EVENT_COLWIDTH / 2) + "..." +
-                    baseS.substring(baseS.length() - (EVENT_COLWIDTH / 2 - 3));
-        if (brS.length() > EVENT_COLWIDTH)
-            brS = brS.substring(0, EVENT_COLWIDTH / 2) + "..." +
-                  brS.substring(brS.length() - (EVENT_COLWIDTH / 2 - 3));
+        if (baseS.equals("-")) { baseS = ""; }
+        if (brS.equals("-")) { brS = ""; }
 
-        out.println(StringUtil.format(lpt.transform(pos), -POS_COLWIDTH, ' ') + " " +
-                    StringUtil.format(baseS, -EVENT_COLWIDTH, ' ') + " " +
-                    StringUtil.format(brS, EVENT_COLWIDTH, ' ') + (update ? " *" : "  ") +
-                    StringUtil.format(rpt.transform(rpos), -POS_COLWIDTH, ' ') + "  " +
-                    sectionPos.getMarker());
+        out.print("<!-- ");
+        out.print(lpt.transform(pos) + "/" +
+                  rpt.transform(rpos) + " " +
+                  sectionPos.getMarker());
+        out.print(" -->");
+
+        out.print(" ");
+
+        String changes = "";
+        if (!baseS.isEmpty()) { changes += baseS; }
+        if (!baseS.isEmpty() && !brS.isEmpty()) { changes += " <=> "; }
+        if (!brS.isEmpty()) { changes += brS + (update ? " *" : "  "); }
+
+        out.println(changes);
     }
 
     public static final PosTransformer DEFAULT_PT = new DefaultPosTranformer();
