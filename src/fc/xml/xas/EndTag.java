@@ -52,7 +52,7 @@ public class EndTag extends Item {
 
     @Override
     public String toStringXML() {
-        return "</" + name + ">";
+        return "<fc:endTag name='" + name.toString() + "'/>";
     }
 }
 

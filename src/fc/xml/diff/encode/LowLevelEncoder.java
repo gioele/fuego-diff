@@ -47,6 +47,9 @@ public class LowLevelEncoder implements DiffEncoder {
                                       List<E> preamble, OutputStream out, PosTransformer lpt,
                                       PosTransformer rpt) {
         PrintWriter pw = new PrintWriter(out);
+
+        pw.println("<fc:diff xmlns:fc='faxma'>");
+
         for (int pos = 0; pos < base.size();) {
             // find corresponding match (+trailing ins)
             Segment<E> match = null;
@@ -55,10 +58,10 @@ public class LowLevelEncoder implements DiffEncoder {
                 if (s.getOp() == INSERT && match != null) {
                     // dump ins (ins dumped after copies)
                     for (int i = 0; i < s.getInsert().size(); i++) {
-                        pw.println("<INS>");
+                        pw.println("<fc:INS>");
                         emitLine(pw, -1, "-", s.getInsert().get(i), s.getOp() == UPDATE,
                                  s.getPosition() + i, lpt, rpt, SectionPos.NONE);
-                        pw.println("</INS>");
+                        pw.println("</fc:INS>");
                     }
                 } else if (s.getOffset() == pos && s.getOp() != INSERT) {
                     found = true;
@@ -77,7 +80,7 @@ public class LowLevelEncoder implements DiffEncoder {
                             (i == slen - 1) ? SectionPos.SECTION_END : SectionPos.SECTION_MIDDLE; 
 
                         if (sectionPos.equals(SectionPos.SECTION_START)) {
-                            pw.println("<COMPLEX>");
+                            pw.println("<fc:MOVE-SEQ>");
                         }
 
                         /*
@@ -93,7 +96,7 @@ public class LowLevelEncoder implements DiffEncoder {
                                  s.getPosition() + i, lpt, rpt, sectionPos);
 
                         if (sectionPos.equals(SectionPos.SECTION_END)) {
-                            pw.println("</COMPLEX>");
+                            pw.println("</fc:MOVE-SEQ>");
                         }
 
                         pos++;
@@ -101,22 +104,25 @@ public class LowLevelEncoder implements DiffEncoder {
                     // update && ins > basematch
                     if (s.getOp() == UPDATE) {
                         for (int i = s.getLength(); i < s.getInsert().size(); i++) {
-                            pw.println("<UPDATE>");
+                            pw.println("<fc:UPDATE>");
                             emitLine(pw, -1, "-", s.getInsert().get(i), s.getOp() == UPDATE,
                                      s.getPosition() + i, lpt, rpt, SectionPos.NONE);
-                            pw.println("</UPDATE>");
+                            pw.println("</fc:UPDATE>");
                         }
                     }
                 } else match = null;
             }
             if (!found) {
                 // Dump del
-                pw.println("<DEL>");
+                pw.println("<fc:DEL>");
                 emitLine(pw, pos, base.get(pos), "-", false, -1, lpt, rpt, SectionPos.NONE);
-                pw.println("</DEL>");
+                pw.println("</fc:DEL>");
                 pos++;
             }
         }
+
+        pw.println("</fc:diff>");
+
         pw.flush();
     }
 
@@ -156,6 +162,10 @@ public class LowLevelEncoder implements DiffEncoder {
         if (!baseS.isEmpty()) { changes += baseS; }
         if (!baseS.isEmpty() && !brS.isEmpty()) { changes += " <=> "; }
         if (!brS.isEmpty()) { changes += brS + (update ? " *" : "  "); }
+
+        if (baseS.equals(brS)) {
+            changes = "<fc:MOVE from='" + pos + "' to='" + rpos + "'>" + baseS + "</fc:MOVE>";
+        }
 
         out.println(changes);
     }

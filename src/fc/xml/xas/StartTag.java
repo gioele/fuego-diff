@@ -323,9 +323,15 @@ public class StartTag extends Item {
 
     @Override
     public String toStringXML() {
-        String begin = "<" + name.toString();
-        String attrs = (atts == null ? "" : " " + String.valueOf(atts));
-        String end = ">";
+        String begin = "<fc:startTag name='" + name.toString() + "'>";
+        String attrs = "";
+
+        for (Iterator<AttributeNode> i = attributes(); i.hasNext();) {
+            AttributeNode a = i.next();
+            attrs += "<attribute name='" + a.getName() + "' value='" + a.getValue() + "'/>";
+        }
+
+        String end = "</fc:startTag>";
 
         return begin + attrs + end;
     }
