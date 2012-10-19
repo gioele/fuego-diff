@@ -48,6 +48,7 @@ public class LowLevelEncoder implements DiffEncoder {
                                       PosTransformer rpt) {
         PrintWriter pw = new PrintWriter(out);
 
+        pw.println("<?xml version=\"1.0\"?>");
         pw.println("<fc:diff xmlns:fc='faxma'>");
 
         for (int pos = 0; pos < base.size();) {
@@ -150,6 +151,7 @@ public class LowLevelEncoder implements DiffEncoder {
         if (baseS.equals("-")) { baseS = ""; }
         if (brS.equals("-")) { brS = ""; }
 
+/*
         out.print("<!-- ");
         out.print(lpt.transform(pos) + "/" +
                   rpt.transform(rpos) + " " +
@@ -157,6 +159,7 @@ public class LowLevelEncoder implements DiffEncoder {
         out.print(" -->");
 
         out.print(" ");
+*/
 
         String changes = "";
         if (!baseS.isEmpty()) { changes += baseS; }
