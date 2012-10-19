@@ -324,7 +324,7 @@ public class StartTag extends Item {
     @Override
     public String toStringXML() {
         String begin = "<" + name.toString();
-        String attrs = (atts == null ? "" : String.valueOf(atts));
+        String attrs = (atts == null ? "" : " " + String.valueOf(atts));
         String end = ">";
 
         return begin + attrs + end;
