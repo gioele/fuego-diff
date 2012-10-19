@@ -54,9 +54,12 @@ public class LowLevelEncoder implements DiffEncoder {
             for (Segment<E> s : matches) {
                 if (s.getOp() == INSERT && match != null) {
                     // dump ins (ins dumped after copies)
-                    for (int i = 0; i < s.getInsert().size(); i++)
+                    for (int i = 0; i < s.getInsert().size(); i++) {
+                        pw.println("<INS>");
                         emitLine(pw, -1, "-", s.getInsert().get(i), s.getOp() == UPDATE,
                                  s.getPosition() + i, lpt, rpt, SectionPos.NONE);
+                        pw.println("</INS>");
+                    }
                 } else if (s.getOffset() == pos && s.getOp() != INSERT) {
                     found = true;
                     match = s;
@@ -97,15 +100,20 @@ public class LowLevelEncoder implements DiffEncoder {
                     }
                     // update && ins > basematch
                     if (s.getOp() == UPDATE) {
-                        for (int i = s.getLength(); i < s.getInsert().size(); i++)
+                        for (int i = s.getLength(); i < s.getInsert().size(); i++) {
+                            pw.println("<UPDATE>");
                             emitLine(pw, -1, "-", s.getInsert().get(i), s.getOp() == UPDATE,
                                      s.getPosition() + i, lpt, rpt, SectionPos.NONE);
+                            pw.println("</UPDATE>");
+                        }
                     }
                 } else match = null;
             }
             if (!found) {
                 // Dump del
+                pw.println("<DEL>");
                 emitLine(pw, pos, base.get(pos), "-", false, -1, lpt, rpt, SectionPos.NONE);
+                pw.println("</DEL>");
                 pos++;
             }
         }
