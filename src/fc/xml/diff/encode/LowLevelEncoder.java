@@ -63,11 +63,16 @@ public class LowLevelEncoder implements DiffEncoder {
                     int slen = s.getLength();
                     for (int i = 0; i < slen; i++) {
                         Object updated = null;
-                        if (s.getOp() == UPDATE) updated = i < s.getInsert().size() ? s.getInsert().get(i) : "-";
-                        else updated = base.get(pos);
+
+                        if (s.getOp() == UPDATE)
+                            updated = i < s.getInsert().size() ? s.getInsert().get(i) : "-";
+                        else
+                            updated = base.get(pos);
+
                         SectionPos sectionPos = (slen == 1) ? SectionPos.NONE :
                             (i == 0) ? SectionPos.SECTION_START : 
                             (i == slen - 1) ? SectionPos.SECTION_END : SectionPos.SECTION_MIDDLE; 
+
                         /*
                         // For long copied sections, print only the first & last 3 lines, and dots in between
                         if (i > 2 && slen > 9 && i < slen - 3 && s.getOp() != UPDATE) {
